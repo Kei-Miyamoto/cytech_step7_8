@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Product;
+use App\Models\Company;
 
 class ProductController extends Controller
 {
@@ -22,11 +23,23 @@ class ProductController extends Controller
      * @return array $products 商品リスト
      * @return view
      */
-    public function showList()
+    public function showList(Request $request)
     {
+        // インスタンス作成
         $product_model = new Product();
-        $products = $product_model->getProducts();
-        return view('home');
+        $company_model = new Company();
+
+        // 検索時
+        if ($request) {
+            // 検索商品情報の取得
+            $products = $product_model->getProducts($request);
+        } else {
+            // 全商品情報の取得
+            $products = $product_model->getAllProducts();
+        }
+        // メーカー情報の取得
+        $companies = $company_model->getCompanies();
+        return view('home', compact('products', 'companies', 'request'));
     }
 
     /**

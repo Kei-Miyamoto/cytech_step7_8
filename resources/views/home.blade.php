@@ -22,28 +22,30 @@
                         </div>
                     @endif
                     <div class="container">
-						<div class="row">
-							<span class="col-4 align-middle p-2">商品名</span>
-							<div class="col-8">
-								<input type="text" id="inputProductName" class="form-control" placeholder="商品名を入力してください">
-							</div>
-						</div>
-						<div class="row">
-							<span class="col-4 align-middle p-2 pt-3">メーカー名</span>
-							<div class="col-8">
-								<select id ="inputCompany" class="form-select my-2">
-									<option selected>選択してください</option>
-									<option value="1">One</option>
-									<option value="2">Two</option>
-									<option value="3">Three</option>
-								</select>
-							</div>
-						</div>
-						<div class="row">
-							<div class="col-12 d-grid gap-2">
-								<button class="btn btn-secondary btn-block" type="button">検索</button>
-							</div>
-						</div>
+                        <form action="{{ route('home')}}" method="GET" class="form-horizontal">
+                            <div class="row">
+                                <span class="col-4 align-middle p-2">商品名</span>
+                                <div class="col-8">
+                                    <input type="search" id="inputProductName" name="input_name" class="form-control" placeholder="商品名を入力してください">
+                                </div>
+                            </div>
+                            <div class="row">
+                                <span class="col-4 align-middle p-2 pt-3">メーカー名</span>
+                                <div class="col-8">
+                                    <select id ="inputCompany" class="form-select my-2" name="company_id">
+                                        <option value="" selected>選択してください</option>
+                                        @foreach($companies as $company)
+                                        <option value="{{ $company->id }}">{{ $company->company_name }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-12 d-grid gap-2">
+                                    <button class="btn btn-secondary btn-block" type="submit">検索</button>
+                                </div>
+                            </div>
+                        </form>
 					</div>
                 </div>
             </div>
@@ -65,18 +67,20 @@
 					</tr>
 				</thead>
 				<tbody>
-					<tr class="table-active align-middle" align="center">
-						<th scope="row">1</th>
-						<td>Mark</td>
-						<td>name</td>
-						<td>Otto</td>
-						<td>Otto</td>
-						<td>Otto</td>
-						<td>
-							<button class="btn btn-primary" onclick="location.href='{{ route('show.detail') }}' ">詳細</button>
-							<button class="btn btn-danger">削除</button>
-						</td>
-					</tr>
+                    @foreach($products as $product)
+                        <tr class="table align-middle" align="center">
+                            <td>{{ $product->id }}</td>
+                            <td>{{ $product->img_path }}</td>
+                            <td>{{ $product->product_name }}</td>
+                            <td>{{ $product->price }}</td>
+                            <td>{{ $product->stock }}</td>
+                            <td>{{ $product->company_name }}</td>
+                            <td>
+                                <button class="btn btn-primary" onclick="location.href='{{ route('show.detail') }}' ">詳細</button>
+                                <button class="btn btn-danger">削除</button>
+                            </td>
+                        </tr>
+                    @endforeach
 				</tbody>
 
 			</table>
