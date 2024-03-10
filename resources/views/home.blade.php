@@ -32,7 +32,6 @@
                         </div>
                     @endif
                     <div class="container">
-                        <form action="{{ route('home')}}" method="GET" class="form-horizontal">
                             <div class="row">
                                 <span class="col-4 align-middle p-2">商品名</span>
                                 <div class="col-8">
@@ -52,10 +51,9 @@
                             </div>
                             <div class="row">
                                 <div class="col-12 d-grid gap-2">
-                                    <button class="btn btn-secondary btn-block" type="submit">検索</button>
+                                    <button id="searchBtn" class="btn btn-secondary btn-block">検索</button>
                                 </div>
                             </div>
-                        </form>
 					</div>
                 </div>
             </div>
@@ -76,7 +74,7 @@
 						<th>操作</th>
 					</tr>
 				</thead>
-				<tbody>
+				<tbody id="tableBody">
                     @foreach($products as $product)
                         <tr class="table align-middle" align="center">
                             <td>{{ $product->id }}</td>

@@ -22,17 +22,30 @@ class ProductController extends Controller
 
     /**
      * 商品一覧画面の表示
-     * @param object $request リクエスト内容
      * @return object $products 商品リスト
      * @return object $companies メーカーリスト
      * @return view
      */
-    public function showList(Request $request)
+    public function showList()
+    {
+        //商品情報の取得
+        $products = $this->product->getAllProducts();
+        // メーカー情報の取得
+        $companies = $this->company->getCompanies();
+        return view('home', compact('products', 'companies'));
+    }
+
+    /**
+     * 検索結果の取得
+     * @param object $request リクエスト内容
+     * @return json $products 商品リスト
+     */
+    public function search(Request $request)
     {
         // 検索時
         if ($request) {
             // 検索内容の取得
-            $keyword = $request->input('input_name');
+            $keyword = $request->input('keyword');
             $company_id = $request->input('company_id');
             // 検索商品情報の取得
             $products = $this->product->getProducts($keyword, $company_id);
@@ -40,9 +53,10 @@ class ProductController extends Controller
             // 全商品情報の取得
             $products = $this->product->getAllProducts();
         }
-        // メーカー情報の取得
-        $companies = $this->company->getCompanies();
-        return view('home', compact('products', 'companies'));
+
+        return response()->json([
+            'products' => $products,
+        ]);
     }
 
     /**
