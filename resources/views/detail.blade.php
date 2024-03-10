@@ -26,9 +26,9 @@
 							</div>
 						</div>
 						<div class="row">
-                            <span class="col-4 align-middle p-2 pt-3">メーカー名</span>
+                            <span class="col-4 align-middle p-2">メーカー名</span>
 							<div class="col-8">
-                                <select id ="company" class="form-select my-2" disabled>
+                                <select id ="company" class="form-select" disabled>
                                     <option selected>選択してください</option>
 									<option value="1">One</option>
 									<option value="2">Two</option>
@@ -46,6 +46,12 @@
                             <span class="col-4 align-middle p-2">在庫数</span>
                             <div class="col-8">
                                 <input type="text" id="stock" class="form-control" readonly>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <span class="col-4 align-middle p-2">コメント</span>
+                            <div class="col-8">
+                                <input type="text" id="comment" class="form-control" name="comment" readonly>
                             </div>
                         </div>
                         <div class="row">

@@ -16,6 +16,8 @@ class ProductController extends Controller
     public function __construct()
     {
         $this->middleware('auth');
+        $this->product = new Product();
+        $this->company = new Company();
     }
 
     /**
@@ -25,21 +27,17 @@ class ProductController extends Controller
      */
     public function showList(Request $request)
     {
-        // インスタンス作成
-        $product_model = new Product();
-        $company_model = new Company();
-
         // 検索時
         if ($request) {
             // 検索商品情報の取得
-            $products = $product_model->getProducts($request);
+            $products = $this->product->getProducts($request);
         } else {
             // 全商品情報の取得
-            $products = $product_model->getAllProducts();
+            $products = $this->product->getAllProducts();
         }
         // メーカー情報の取得
-        $companies = $company_model->getCompanies();
-        return view('home', compact('products', 'companies', 'request'));
+        $companies = $this->company->getCompanies();
+        return view('home', compact('products', 'companies'));
     }
 
     /**
@@ -48,7 +46,24 @@ class ProductController extends Controller
      */
     public function showRegister()
     {
-        return view('register');
+        // メーカー情報の取得
+        $companies = $this->company->getCompanies();
+        return view('register', compact('companies'));
+    }
+
+    /**
+     * 商品を登録する
+     * @return view
+     */
+    public function register(Request $request)
+    {
+        // 登録処理
+        $result = $this->product->register($request);
+
+        if (!$result) {
+            return redirect()->route('show.register')->with('message', '登録に失敗しました。');
+        }
+        return redirect()->route('home')->with('message', '登録が完了しました。');
     }
 
     /**

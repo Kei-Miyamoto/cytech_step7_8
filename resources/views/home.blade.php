@@ -10,6 +10,11 @@
 			<button class="btn btn-primary" onclick="location.href='{{ route('show.register') }}' ">新規登録</button>
 		</div>
     </div>
+    @if (session('message'))
+        <div class="alert alert-success my-2" role="alert">
+            {{ session('message') }}
+        </div>
+    @endif
 
     <div class="row justify-content-center">
         <div class="col-md-8 my-3">
@@ -35,7 +40,7 @@
                                     <select id ="inputCompany" class="form-select my-2" name="company_id">
                                         <option value="" selected>選択してください</option>
                                         @foreach($companies as $company)
-                                        <option value="{{ $company->id }}">{{ $company->company_name }}</option>
+                                            <option value="{{ $company->id }}">{{ $company->company_name }}</option>
                                         @endforeach
                                     </select>
                                 </div>
@@ -70,7 +75,9 @@
                     @foreach($products as $product)
                         <tr class="table align-middle" align="center">
                             <td>{{ $product->id }}</td>
-                            <td>{{ $product->img_path }}</td>
+                            <td>
+                                <img src="{{ asset('storage/'.$product->img_path) }}" alt="商品画像無し" width="100" height="100">
+                            </td>
                             <td>{{ $product->product_name }}</td>
                             <td>{{ $product->price }}</td>
                             <td>{{ $product->stock }}</td>

@@ -5,6 +5,8 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Validation\Rule;
+use Illuminate\Support\Facades\Validator;
 
 class Product extends Model
 {
@@ -46,8 +48,63 @@ class Product extends Model
         if ($company_id) {
             $query->where('c.id', '=', $company_id);
         }
+        $query->orderBy('p.id', 'asc');
         $products = $query->get();
 
         return $products;
+    }
+
+    /**
+     * 商品情報のバリデーションチェック
+     * @param
+     */
+    function validateInputs($inputs) {
+
+        $inputs->validate([
+            'product_name' => 'required|max:255',
+            'price' => 'required|max:11',
+            'stock' => 'required|max:11',
+            'comment' => 'max:255',
+            'img_path' => 'max:1000'
+        ]);
+        return $inputs;
+    }
+
+    /**
+     * 商品登録
+     * @param
+     * @return object $products 商品
+     */
+    function register($request) {
+
+        // バリデーションチェック
+        $inputs = $this->validateInputs($request);
+        $result = false;
+        try {
+            $product = new Product();
+            // 登録処理
+            $product->product_name = $inputs['product_name'];
+            $product->company_id = $inputs['company_id'];
+            $product->price = $inputs['price'];
+            $product->stock = $inputs['stock'];
+            $product->comment = $inputs['comment'];
+
+            // 画像のアップロードがある場合
+            if ($inputs['img_path']) {
+                $dir = 'image';
+                // ファイル名を取得し保存
+                $file_name = $request->file('img_path')->getClientOriginalName();
+                $request->file('img_path')->storeAs('public/' . $dir, $file_name);
+                // パスを格納
+                $img_path = $dir . '/' . $file_name;
+                $product->img_path = $img_path;
+            }
+            $product->save();
+            $result = true;
+            return $result;
+
+        } catch (Exception $e) {
+            return $result;
+        }
     }
 }

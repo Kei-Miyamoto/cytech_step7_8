@@ -8,6 +8,15 @@
 		</div>
     </div>
 
+    @if (session('message'))
+        <div class="alert alert-success" role="alert">
+            {{ session('message') }}
+        </div>
+    @endif
+    @foreach ($errors->all() as $error)
+        <li>{{$error}}</li>
+    @endforeach
+
     <div class="row justify-content-center">
         <div class="col-md-8 my-3">
             <div class="card">
@@ -19,47 +28,56 @@
                         </div>
                     @endif
                     <div class="container">
-						<div class="row">
-							<span class="col-4 align-middle p-2">商品名</span>
-							<div class="col-8">
-								<input type="text" id="productName" class="form-control" placeholder="商品名を入力してください">
-							</div>
-						</div>
-						<div class="row">
-                            <span class="col-4 align-middle p-2 pt-3">メーカー名</span>
-							<div class="col-8">
-                                <select id ="company" class="form-select my-2">
-                                    <option selected>選択してください</option>
-									<option value="1">One</option>
-									<option value="2">Two</option>
-									<option value="3">Three</option>
-								</select>
-							</div>
-						</div>
-                        <div class="row">
-                            <span class="col-4 align-middle p-2">価格</span>
-                            <div class="col-8">
-                                <input type="text" id="price" class="form-control" placeholder="商品名を入力してください">
+                        <form action="{{ route('register')}}" method="POST" class="form-horizontal" enctype="multipart/form-data">
+                            @csrf
+                            <div class="row mb-2">
+                                <span class="col-4 align-middle p-2">商品名</span>
+                                <div class="col-8">
+                                    <input type="text" id="productName" name="product_name" class="form-control" placeholder="商品名を入力してください">
+                                </div>
                             </div>
-                        </div>
-                        <div class="row">
-                            <span class="col-4 align-middle p-2">在庫数</span>
-                            <div class="col-8">
-                                <input type="text" id="stock" class="form-control" placeholder="商品名を入力してください">
+                            <div class="row mb-2">
+                                <span class="col-4 align-middle p-2">メーカー名</span>
+                                <div class="col-8">
+                                    <select id ="companyId" class="form-select" name="company_id">
+                                        <option value="" selected>選択してください</option>
+                                        @foreach($companies as $company)
+                                        <option value="{{ $company->id }}">{{ $company->company_name }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
                             </div>
-                        </div>
-                        <div class="row">
-                            <span class="col-4 align-middle p-2">商品画像</span>
-                            <div class="col-8">
-                                <input type="text" id="inputProductName" class="form-control" placeholder="商品名を入力してください">
+                            <div class="row mb-2">
+                                <span class="col-4 align-middle p-2">価格</span>
+                                <div class="col-8">
+                                    <input type="text" id="price" class="form-control" name="price" placeholder="価格を入力してください">
+                                </div>
                             </div>
-                        </div>
-						<div class="row my-3"></div>
-						<div class="row">
-							<div class="col-12 d-grid gap-2">
-								<button class="btn btn-primary btn-block" type="button">登録</button>
-							</div>
-						</div>
+                            <div class="row mb-2">
+                                <span class="col-4 align-middle p-2">在庫数</span>
+                                <div class="col-8">
+                                    <input type="text" id="stock" class="form-control" name="stock" placeholder="在庫数を入力してください">
+                                </div>
+                            </div>
+                            <div class="row mb-2">
+                                <span class="col-4 align-middle p-2">コメント</span>
+                                <div class="col-8">
+                                    <input type="text" id="comment" class="form-control" name="comment" placeholder="コメントを入力してください">
+                                </div>
+                            </div>
+                            <div class="row mb-2">
+                                <span class="col-4 align-middle p-2">商品画像</span>
+                                <div class="col-8">
+                                    <input type="file" id="imgPath" class="form-control" name="img_path" placeholder="商品画像を選択してください">
+                                </div>
+                            </div>
+                            <div class="row my-3"></div>
+                            <div class="row">
+                                <div class="col-12 d-grid gap-2">
+                                    <button class="btn btn-primary btn-block" type="submit">登録</button>
+                                </div>
+                            </div>
+                        </form>
 					</div>
                 </div>
             </div>
