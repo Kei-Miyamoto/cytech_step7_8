@@ -13,6 +13,11 @@
             {{ session('message') }}
         </div>
     @endif
+    @if (session('error'))
+        <div class="alert alert-success" role="alert">
+            {{ session('error') }}
+        </div>
+    @endif
     @foreach ($errors->all() as $error)
         <li>{{$error}}</li>
     @endforeach

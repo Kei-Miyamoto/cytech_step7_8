@@ -26,5 +26,6 @@ Route::get('/detail/{id}', [App\Http\Controllers\ProductController::class, 'show
 Route::get('/edit/{id}', [App\Http\Controllers\ProductController::class, 'showEdit'])->name('show.edit');
 
 Route::post('/exe_update', [App\Http\Controllers\ProductController::class, 'update'])->name('update');
+Route::get('/destroy/{id}', [App\Http\Controllers\ProductController::class, 'destroy'])->name('destroy');
 
 

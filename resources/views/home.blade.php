@@ -15,6 +15,11 @@
             {{ session('message') }}
         </div>
     @endif
+    @if (session('error'))
+        <div class="alert alert-danger my-2" role="alert">
+            {{ session('error') }}
+        </div>
+    @endif
 
     <div class="row justify-content-center">
         <div class="col-md-8 my-3">
@@ -59,7 +64,7 @@
 			<hr>
 		</div>
 		<div class="container">
-			<table class="table">
+			<table class="table table-hover">
 				<thead>
 					<tr class="align-middle" align="center">
 						<th>ID</th>
@@ -84,7 +89,7 @@
                             <td>{{ $product->company_name }}</td>
                             <td>
                                 <button class="btn btn-primary" onclick="location.href='{{ route('show.detail', $product->id) }}' ">詳細</button>
-                                <button class="btn btn-danger">削除</button>
+                                <button class="btn btn-danger" onclick="location.href='{{ route('destroy', $product->id) }}' ">削除</button>
                             </td>
                         </tr>
                     @endforeach

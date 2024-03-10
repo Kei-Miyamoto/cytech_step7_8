@@ -31,14 +31,12 @@ class Product extends Model
 
     /**
      * 商品検索情報の取得
-     * @param object $request リクエスト内容
+     * @param object $keyword キーワード
+     * @param object $company_id メーカーID
      * @return object $products 商品
      */
-    function getProducts($request) {
+    function getProducts($keyword, $company_id) {
 
-        // 検索内容の取得
-        $keyword = $request->input('input_name');
-        $company_id = $request->input('company_id');
         // 検索内容に応じて商品情報の取得
         $query = DB::table('products as p');
         $query->select('p.*', 'c.company_name');
@@ -72,30 +70,12 @@ class Product extends Model
     }
 
     /**
-     * 商品情報のバリデーションチェック
-     */
-    function validateInputs($inputs) {
-
-        $inputs->validate([
-            'product_name' => 'required|max:255',
-            'price' => 'required|max:11',
-            'stock' => 'required|max:11',
-            'comment' => 'max:255',
-            'img_path' => 'max:1000'
-        ]);
-        return $inputs;
-    }
-
-    /**
      * 商品登録
-     * @param object $request リクエスト内容
+     * @param object $inputs 入力内容
      * @return boolean $result 成功：True  失敗：False
      */
-    function register($request) {
+    function register($inputs) {
 
-        // バリデーションチェック
-        $inputs = $this->validateInputs($request);
-        $result = false;
         try {
             $product = new Product();
             // 登録処理
@@ -116,24 +96,20 @@ class Product extends Model
                 $product->img_path = $img_path;
             }
             $product->save();
-            $result = true;
-            return $result;
+            return true;
 
         } catch (Exception $e) {
-            return $result;
+            return false;
         }
     }
 
     /**
      * 商品更新
-     * @param object $request リクエスト内容
+     * @param object $inputs 入力内容
      * @return boolean $result 成功：True  失敗：False
      */
-    function exeUpdate($request) {
+    function exeUpdate($inputs) {
 
-        // バリデーションチェック
-        $inputs = $this->validateInputs($request);
-        $result = false;
         try {
             // 画像有無の確認
             $org_product = $this->getProduct($inputs['product_id']);
@@ -161,11 +137,22 @@ class Product extends Model
                 'img_path' => $img_path ? $img_path: $org_img_path,
                 'updated_at' => Carbon::now(),
             ]);
-            $result = true;
-            return $result;
+
+            return true;
 
         } catch (Exception $e) {
-            return $result;
+            return false;
         }
+    }
+
+    /**
+     * 商品情報を削除する
+     */
+    function exeDestroy($id) {
+
+        $query = DB::table('products');
+        $query->where('id', $id);
+        $query->delete();
+        return true;
     }
 }

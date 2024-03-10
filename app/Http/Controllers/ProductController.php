@@ -31,8 +31,11 @@ class ProductController extends Controller
     {
         // 検索時
         if ($request) {
+            // 検索内容の取得
+            $keyword = $request->input('input_name');
+            $company_id = $request->input('company_id');
             // 検索商品情報の取得
-            $products = $this->product->getProducts($request);
+            $products = $this->product->getProducts($keyword, $company_id);
         } else {
             // 全商品情報の取得
             $products = $this->product->getAllProducts();
@@ -61,11 +64,13 @@ class ProductController extends Controller
      */
     public function register(Request $request)
     {
+        // バリデーションチェック
+        $inputs = $this->validateInputs($request);
         // 登録処理
-        $result = $this->product->register($request);
+        $result = $this->product->register($inputs);
 
         if (!$result) {
-            return redirect()->route('show.register')->with('message', '登録に失敗しました。');
+            return redirect()->route('show.register')->with('error', '登録に失敗しました。');
         }
         return redirect()->route('home')->with('message', '登録が完了しました。');
     }
@@ -99,7 +104,6 @@ class ProductController extends Controller
         return view('edit', compact('product', 'companies'));
     }
 
-
     /**
      * 商品を更新する
      * @param object $request リクエスト内容
@@ -107,12 +111,50 @@ class ProductController extends Controller
      */
     public function update(Request $request)
     {
+        // バリデーションチェック
+        $inputs = $this->validateInputs($request);
         // 更新処理
-        $result = $this->product->exeUpdate($request);
+        $result = $this->product->exeUpdate($inputs);
 
         if (!$result) {
-            return redirect()->route('home')->with('message', '更新に失敗しました。');
+            return redirect()->route('home')->with('error', '更新に失敗しました。');
         }
         return redirect()->route('home')->with('message', '更新が完了しました。');
+    }
+
+    /**
+     * 商品を削除する
+     * @param integer $id 商品ID
+     * @return view
+     */
+    public function destroy($id)
+    {
+        // 存在確認
+        $product = $this->product->getProduct($id);
+        if (!$product) {
+            return redirect()->route('home')->with('error', '削除対象の商品がありません。');
+        }
+        // 削除処理
+        $result = $this->product->exeDestroy($id);
+
+        if (!$result) {
+            return redirect()->route('home')->with('error', '削除に失敗しました。');
+        }
+        return redirect()->route('home')->with('message', '削除が完了しました。');
+    }
+
+    /**
+     * 商品情報のバリデーションチェック
+     */
+    function validateInputs($inputs) {
+
+        $inputs->validate([
+            'product_name' => 'required|max:255',
+            'price' => 'required|max:11',
+            'stock' => 'required|max:11',
+            'comment' => 'max:255',
+            'img_path' => 'max:1000'
+        ]);
+        return $inputs;
     }
 }
