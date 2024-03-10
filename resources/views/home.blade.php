@@ -83,7 +83,7 @@
                             <td>{{ $product->stock }}</td>
                             <td>{{ $product->company_name }}</td>
                             <td>
-                                <button class="btn btn-primary" onclick="location.href='{{ route('show.detail') }}' ">詳細</button>
+                                <button class="btn btn-primary" onclick="location.href='{{ route('show.detail', $product->id) }}' ">詳細</button>
                                 <button class="btn btn-danger">削除</button>
                             </td>
                         </tr>

@@ -14,7 +14,6 @@ class Product extends Model
 
     /**
      * 全商品一覧の取得
-     * @param
      * @return object $products 商品
      */
     function getAllProducts() {
@@ -31,7 +30,7 @@ class Product extends Model
 
     /**
      * 商品検索情報の取得
-     * @param
+     * @param object $request リクエスト内容
      * @return object $products 商品
      */
     function getProducts($request) {
@@ -55,8 +54,24 @@ class Product extends Model
     }
 
     /**
+     * 商品情報1件の取得
+     * @param integer $id 商品ID
+     * @return object $product 商品情報
+     */
+    function getProduct($id) {
+
+        // リクエストに応じて商品情報の取得
+        $query = DB::table('products as p');
+        $query->select('p.*', 'c.company_name');
+        $query->leftJoin('companies as c', 'p.company_id', '=', 'c.id');
+        $query->where('p.id', '=', "$id");
+        $product = $query->first();
+
+        return $product;
+    }
+
+    /**
      * 商品情報のバリデーションチェック
-     * @param
      */
     function validateInputs($inputs) {
 
@@ -72,8 +87,8 @@ class Product extends Model
 
     /**
      * 商品登録
-     * @param
-     * @return object $products 商品
+     * @param object $request リクエスト内容
+     * @return boolean $result 成功：True  失敗：False
      */
     function register($request) {
 

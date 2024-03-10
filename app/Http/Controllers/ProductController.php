@@ -70,9 +70,11 @@ class ProductController extends Controller
      * 商品詳細画面の表示
      * @return view
      */
-    public function showDetail()
+    public function showDetail($id)
     {
-        return view('detail');
+        // 商品情報の取得
+        $product = $this->product->getProduct($id);
+        return view('detail', compact('product'));
     }
 
     /**

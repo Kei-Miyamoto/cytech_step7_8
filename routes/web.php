@@ -22,7 +22,7 @@ Auth::routes();
 Route::get('/home', [App\Http\Controllers\ProductController::class, 'showList'])->name('home');
 Route::get('/register', [App\Http\Controllers\ProductController::class, 'showRegister'])->name('show.register');
 Route::post('/exe_register', [App\Http\Controllers\ProductController::class, 'register'])->name('register');
-Route::get('/detail', [App\Http\Controllers\ProductController::class, 'showDetail'])->name('show.detail');
+Route::get('/detail/{id}', [App\Http\Controllers\ProductController::class, 'showDetail'])->name('show.detail');
 Route::get('/edit', [App\Http\Controllers\ProductController::class, 'showEdit'])->name('show.edit');
 
 
