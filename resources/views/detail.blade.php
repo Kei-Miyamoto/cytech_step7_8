@@ -19,6 +19,12 @@
                         </div>
                     @endif
                     <div class="container">
+                        <div class="row">
+                            <span class="col-4 align-middle p-2">ID</span>
+                            <div class="col-8">
+                                <input type="text" id="productId" class="form-control" name="product_id" value="{{ $product->id }}" readonly>
+                            </div>
+                        </div>
 						<div class="row">
 							<span class="col-4 align-middle p-2">商品名</span>
 							<div class="col-8">

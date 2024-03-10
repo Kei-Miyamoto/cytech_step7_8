@@ -23,6 +23,8 @@ Route::get('/home', [App\Http\Controllers\ProductController::class, 'showList'])
 Route::get('/register', [App\Http\Controllers\ProductController::class, 'showRegister'])->name('show.register');
 Route::post('/exe_register', [App\Http\Controllers\ProductController::class, 'register'])->name('register');
 Route::get('/detail/{id}', [App\Http\Controllers\ProductController::class, 'showDetail'])->name('show.detail');
-Route::get('/edit', [App\Http\Controllers\ProductController::class, 'showEdit'])->name('show.edit');
+Route::get('/edit/{id}', [App\Http\Controllers\ProductController::class, 'showEdit'])->name('show.edit');
+
+Route::post('/exe_update', [App\Http\Controllers\ProductController::class, 'update'])->name('update');
 
 

@@ -22,7 +22,9 @@ class ProductController extends Controller
 
     /**
      * 商品一覧画面の表示
-     * @return array $products 商品リスト
+     * @param object $request リクエスト内容
+     * @return object $products 商品リスト
+     * @return object $companies メーカーリスト
      * @return view
      */
     public function showList(Request $request)
@@ -42,6 +44,7 @@ class ProductController extends Controller
 
     /**
      * 商品登録画面の表示
+     * @return object $companies メーカーリスト
      * @return view
      */
     public function showRegister()
@@ -53,6 +56,7 @@ class ProductController extends Controller
 
     /**
      * 商品を登録する
+     * @param object $request リクエスト内容
      * @return view
      */
     public function register(Request $request)
@@ -68,6 +72,8 @@ class ProductController extends Controller
 
     /**
      * 商品詳細画面の表示
+     * @param integer $id 商品ID
+     * @return object $product 商品情報
      * @return view
      */
     public function showDetail($id)
@@ -79,10 +85,34 @@ class ProductController extends Controller
 
     /**
      * 商品編集画面の表示
+     * @param integer $id 商品ID
+     * @return object $product 商品情報
+     * @return object $companies メーカーリスト
      * @return view
      */
-    public function showEdit()
+    public function showEdit($id)
     {
-        return view('edit');
+        // 商品情報の取得
+        $product = $this->product->getProduct($id);
+        // メーカー情報の取得
+        $companies = $this->company->getCompanies();
+        return view('edit', compact('product', 'companies'));
+    }
+
+
+    /**
+     * 商品を更新する
+     * @param object $request リクエスト内容
+     * @return view
+     */
+    public function update(Request $request)
+    {
+        // 更新処理
+        $result = $this->product->exeUpdate($request);
+
+        if (!$result) {
+            return redirect()->route('home')->with('message', '更新に失敗しました。');
+        }
+        return redirect()->route('home')->with('message', '更新が完了しました。');
     }
 }

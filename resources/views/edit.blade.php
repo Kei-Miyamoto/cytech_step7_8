@@ -19,60 +19,72 @@
                         </div>
                     @endif
                     <div class="container">
-						<div class="row">
-							<span class="col-4 align-middle p-2">商品名</span>
-							<div class="col-8">
-								<input type="text" id="productName" class="form-control" value="">
-							</div>
-						</div>
-						<div class="row">
-                            <span class="col-4 align-middle p-2">メーカー名</span>
-							<div class="col-8">
-                                <select id ="company" class="form-select">
-                                    <option selected>選択してください</option>
-									<option value="1">One</option>
-									<option value="2">Two</option>
-									<option value="3">Three</option>
-								</select>
-							</div>
-						</div>
-                        <div class="row">
-                            <span class="col-4 align-middle p-2">価格</span>
-                            <div class="col-8">
-                                <input type="text" id="price" class="form-control" value="">
+                        <form action="{{ route('update')}}" method="POST" class="form-horizontal" enctype="multipart/form-data">
+                            @csrf
+                            <div class="row">
+                                <span class="col-4 align-middle p-2">ID</span>
+                                <div class="col-8">
+                                    <input type="text" id="productId" class="form-control" name="product_id" value="{{ $product->id }}" readonly>
+                                </div>
                             </div>
-                        </div>
-                        <div class="row">
-                            <span class="col-4 align-middle p-2">在庫数</span>
-                            <div class="col-8">
-                                <input type="text" id="stock" class="form-control" value="">
+                            <div class="row">
+                                <span class="col-4 align-middle p-2">商品名<span class="text-danger">*</span></span>
+                                <div class="col-8">
+                                    <input type="text" id="productName" class="form-control" name="product_name" value="{{ $product->product_name }}">
+                                </div>
                             </div>
-                        </div>
-                        <div class="row mb-2">
-                            <span class="col-4 align-middle p-2">コメント</span>
-                            <div class="col-8">
-                                <input type="text" id="comment" class="form-control" name="comment" placeholder="コメントを入力してください">
+                            <div class="row">
+                                <span class="col-4 align-middle p-2">メーカー名<span class="text-danger">*</span></span>
+                                <div class="col-8">
+                                    <select id ="company" class="form-select" name="company_id">
+                                        @foreach ($companies as $company)
+                                            @if ($company->company_name == $product->company_name)
+                                                <option value="{{ $company->id }}" selected>{{ $company->company_name }}</option>
+                                            @else
+                                                <option value="{{ $company->id }}">{{ $company->company_name }}</option>
+                                            @endif
+                                        @endforeach
+                                    </select>
+                                </div>
                             </div>
-                        </div>
-                        <div class="row">
-                            <span class="col-4 align-middle p-2">商品画像</span>
-                            <div class="col-8">
-                                <input type="text" id="inputProductName" class="form-control" value="">
+                            <div class="row">
+                                <span class="col-4 align-middle p-2">価格<span class="text-danger">*</span></span>
+                                <div class="col-8">
+                                    <input type="text" id="price" class="form-control" name="price" value="{{ $product->price }}">
+                                </div>
                             </div>
-                        </div>
-						<div class="row my-3"></div>
-						<div class="row">
-							<div class="col-12 d-grid gap-2">
-								<button class="btn btn-primary btn-block" type="button">更新</button>
-							</div>
-						</div>
+                            <div class="row">
+                                <span class="col-4 align-middle p-2">在庫数<span class="text-danger">*</span></span>
+                                <div class="col-8">
+                                    <input type="text" id="stock" class="form-control" name="stock" value="{{ $product->stock }}">
+                                </div>
+                            </div>
+                            <div class="row">
+                                <span class="col-4 align-middle p-2">コメント</span>
+                                <div class="col-8">
+                                    <input type="text" id="comment" class="form-control" name="comment" value="{{ $product->comment }}" >
+                                </div>
+                            </div>
+                            <div class="row">
+                                <span class="col-4 align-middle p-2">商品画像</span>
+                                <div class="col-8 p-2">
+                                    <input type="file" id="imgPath" class="form-control" name="img_path">
+                                </div>
+                            </div>
+                            <div class="row my-3"></div>
+                            <div class="row">
+                                <div class="col-12 d-grid gap-2">
+                                    <button class="btn btn-primary btn-block" type="submit">更新</button>
+                                </div>
+                            </div>
+                        </form>
 					</div>
                 </div>
             </div>
             <div class="row my-2"></div>
             <div class="row">
                 <div class="col-12">
-                    <button class="btn btn-secondary" type="button" onclick="location.href='{{ route('show.detail') }}' ">戻る</button>
+                    <button class="btn btn-secondary" type="button" onclick="location.href='{{ route('show.detail', $product->id) }}' ">戻る</button>
                 </div>
             </div>
         </div>

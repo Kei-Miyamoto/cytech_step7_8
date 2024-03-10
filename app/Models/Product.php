@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Validator;
+use Carbon\Carbon;
 
 class Product extends Model
 {
@@ -108,13 +109,58 @@ class Product extends Model
             if ($inputs['img_path']) {
                 $dir = 'image';
                 // ファイル名を取得し保存
-                $file_name = $request->file('img_path')->getClientOriginalName();
-                $request->file('img_path')->storeAs('public/' . $dir, $file_name);
+                $file_name = $inputs->file('img_path')->getClientOriginalName();
+                $inputs->file('img_path')->storeAs('public/' . $dir, $file_name);
                 // パスを格納
                 $img_path = $dir . '/' . $file_name;
                 $product->img_path = $img_path;
             }
             $product->save();
+            $result = true;
+            return $result;
+
+        } catch (Exception $e) {
+            return $result;
+        }
+    }
+
+    /**
+     * 商品更新
+     * @param object $request リクエスト内容
+     * @return boolean $result 成功：True  失敗：False
+     */
+    function exeUpdate($request) {
+
+        // バリデーションチェック
+        $inputs = $this->validateInputs($request);
+        $result = false;
+        try {
+            // 画像有無の確認
+            $org_product = $this->getProduct($inputs['product_id']);
+            $org_img_path = $org_product->img_path;
+            $img_path = null;
+            // 画像のアップロードがある場合
+            if ($inputs['img_path']) {
+                $dir = 'image';
+                // ファイル名を取得し保存
+                $file_name = $inputs->file('img_path')->getClientOriginalName();
+                $inputs->file('img_path')->storeAs('public/' . $dir, $file_name);
+                // パスを格納
+                $img_path = $dir . '/' . $file_name;
+            }
+
+            // 更新処理
+            $query = DB::table('products');
+            $query->where('id', $inputs['product_id']);
+            $query->update([
+                'product_name' => $inputs['product_name'],
+                'company_id' => $inputs['company_id'],
+                'price' => $inputs['price'],
+                'stock' => $inputs['stock'],
+                'comment' => $inputs['comment'],
+                'img_path' => $img_path ? $img_path: $org_img_path,
+                'updated_at' => Carbon::now(),
+            ]);
             $result = true;
             return $result;
 

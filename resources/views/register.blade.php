@@ -31,13 +31,13 @@
                         <form action="{{ route('register')}}" method="POST" class="form-horizontal" enctype="multipart/form-data">
                             @csrf
                             <div class="row mb-2">
-                                <span class="col-4 align-middle p-2">商品名</span>
+                                <span class="col-4 align-middle p-2 position-relative">商品名<span class="text-danger">*</span></span>
                                 <div class="col-8">
                                     <input type="text" id="productName" name="product_name" class="form-control" placeholder="商品名を入力してください">
                                 </div>
                             </div>
                             <div class="row mb-2">
-                                <span class="col-4 align-middle p-2">メーカー名</span>
+                                <span class="col-4 align-middle p-2">メーカー名<span class="text-danger">*</span></span>
                                 <div class="col-8">
                                     <select id ="companyId" class="form-select" name="company_id">
                                         <option value="" selected>選択してください</option>
@@ -48,13 +48,13 @@
                                 </div>
                             </div>
                             <div class="row mb-2">
-                                <span class="col-4 align-middle p-2">価格</span>
+                                <span class="col-4 align-middle p-2">価格<span class="text-danger">*</span></span>
                                 <div class="col-8">
                                     <input type="text" id="price" class="form-control" name="price" placeholder="価格を入力してください">
                                 </div>
                             </div>
                             <div class="row mb-2">
-                                <span class="col-4 align-middle p-2">在庫数</span>
+                                <span class="col-4 align-middle p-2">在庫数<span class="text-danger">*</span></span>
                                 <div class="col-8">
                                     <input type="text" id="stock" class="form-control" name="stock" placeholder="在庫数を入力してください">
                                 </div>
