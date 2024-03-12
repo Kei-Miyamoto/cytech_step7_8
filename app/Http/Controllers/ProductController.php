@@ -47,8 +47,12 @@ class ProductController extends Controller
             // 検索内容の取得
             $keyword = $request->input('keyword');
             $company_id = $request->input('company_id');
+            $price_min = $request->input('price_min');
+            $price_max = $request->input('price_max');
+            $stock_min = $request->input('stock_min');
+            $stock_max = $request->input('stock_max');
             // 検索商品情報の取得
-            $products = $this->product->getProducts($keyword, $company_id);
+            $products = $this->product->getProducts($keyword, $company_id, $price_min, $price_max, $stock_min, $stock_max);
         } else {
             // 全商品情報の取得
             $products = $this->product->getAllProducts();

@@ -6,3 +6,16 @@
 
 // Bootstrap
 @import 'bootstrap/scss/bootstrap';
+
+.card-header[data-bs-toggle="collapse"].collapsed::after {
+    font-family: 'Font Awesome 5 Free';
+    font-weight: 900;
+    content: "\f078";/* chevron-down */
+    float: right;
+}
+.card-header[data-bs-toggle="collapse"]::after {
+    font-family: 'Font Awesome 5 Free';
+    font-weight: 900;
+    content: "\f077";/* chevron-up */
+    float: right;
+}

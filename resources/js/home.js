@@ -9,6 +9,10 @@ $(function() {
         // 検索内容を取得する
         let keyword = $('#inputProductName').val();
         let companyId = $('#inputCompany').val();
+        let priceMin = $('#inputPriceMin').val();
+        let priceMax = $('#inputPriceMax').val();
+        let stockMin = $('#inputStockMin').val();
+        let stockMax = $('#inputStockMax').val();
 
         //テーブルを空にする
         $('#tableBody').empty();
@@ -21,6 +25,10 @@ $(function() {
             data: {
                 keyword: keyword,
                 company_id: companyId,
+                price_min: priceMin,
+                price_max: priceMax,
+                stock_min: stockMin,
+                stock_max: stockMax,
             },
             cache: false,
         })
@@ -53,5 +61,15 @@ $(function() {
             console.log(xhr);
             console.log(data || 'null');
         });
+    });
+
+    $('#clearBtn').on('click', function() {
+        // 検索内容を空にする
+        $('#inputProductName').val('');
+        $('#inputCompany').val('');
+        $('#inputPriceMin').val('');
+        $('#inputPriceMax').val('');
+        $('#inputStockMin').val('');
+        $('#inputStockMax').val('');
     });
 })

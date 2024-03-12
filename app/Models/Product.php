@@ -31,11 +31,15 @@ class Product extends Model
 
     /**
      * 商品検索情報の取得
-     * @param object $keyword キーワード
-     * @param object $company_id メーカーID
+     * @param string $keyword キーワード
+     * @param integer $company_id メーカーID
+     * @param integer $price_min 価格下限
+     * @param integer $price_max 価格上限
+     * @param integer $stock_min 在庫数下限
+     * @param integer $stock_max 在庫数上限
      * @return object $products 商品
      */
-    function getProducts($keyword, $company_id) {
+    function getProducts($keyword, $company_id, $price_min, $price_max, $stock_min, $stock_max) {
 
         // 検索内容に応じて商品情報の取得
         $query = DB::table('products as p');
@@ -45,6 +49,22 @@ class Product extends Model
         // メーカー名の入力があった時のみメーカーIDで絞り込み
         if ($company_id) {
             $query->where('c.id', '=', $company_id);
+        }
+        // 価格下限の入力があった時のみ価格下限値で絞り込み
+        if ($price_min) {
+            $query->where('p.price', '>=', $price_min);
+        }
+        // 価格上限の入力があった時のみ価格上限値で絞り込み
+        if ($price_max) {
+            $query->where('p.price', '<=', $price_max);
+        }
+        // 在庫数下限の入力があった時のみ在庫数下限値で絞り込み
+        if ($stock_min) {
+            $query->where('p.stock', '>=', $stock_min);
+        }
+        // 在庫数上限の入力があった時のみ在庫数上限値で絞り込み
+        if ($stock_max) {
+            $query->where('p.stock', '<=', $stock_max);
         }
         $query->orderBy('p.id', 'asc');
         $products = $query->get();
