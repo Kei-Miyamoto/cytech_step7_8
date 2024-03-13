@@ -5,6 +5,7 @@ $(function() {
         }
     });
 
+    // 検索ボタン押下時
     $('#searchBtn').on('click', function() {
         // 検索内容を取得する
         let keyword = $('#inputProductName').val();
@@ -63,6 +64,7 @@ $(function() {
         });
     });
 
+    // クリアボタン押下時
     $('#clearBtn').on('click', function() {
         // 検索内容を空にする
         $('#inputProductName').val('');
@@ -72,4 +74,10 @@ $(function() {
         $('#inputStockMin').val('');
         $('#inputStockMax').val('');
     });
+
+
+    $(document).ready(function() {
+        $('#table').tablesorter();
+    });
+
 })

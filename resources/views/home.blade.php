@@ -91,9 +91,9 @@
 		<div class="m-3">
 			<hr>
 		</div>
-		<div class="container">
-			<table class="table table-hover">
-				<thead>
+		<div class="container card">
+			<table id="table" class="table table-hover">
+				<thead class="">
 					<tr class="align-middle" align="center">
 						<th>ID</th>
 						<th>商品画像</th>

@@ -19,3 +19,26 @@
     content: "\f077";/* chevron-up */
     float: right;
 }
+
+
+.tablesorter-headerUnSorted:before {
+    content: "\f0dc";
+    font-family: 'Font Awesome 5 Free';
+    float: right;
+    text-decoration: inherit;
+    color: black;
+}
+
+.tablesorter-headerAsc:before {
+    content: "\f0de";
+    font-family: 'Font Awesome 5 Free';
+    float: right;
+    text-decoration: inherit;
+}
+
+.tablesorter-headerDesc:before {
+    content: "\f0dd";
+    font-family: 'Font Awesome 5 Free';
+    float: right;
+    text-decoration: inherit;
+}
