@@ -55,6 +55,8 @@ $(function() {
                 `;
                 // テーブルに差し込む
                 $('#tableBody').append(html);
+                // 追加した項目もソート対象になるようにする
+                $("#table").trigger("update");
             });
         })
         .fail(function(data, xhr, err) {
