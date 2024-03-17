@@ -77,9 +77,87 @@ $(function() {
         $('#inputStockMax').val('');
     });
 
-
+    // ソート機能
     $(document).ready(function() {
         $('#table').tablesorter();
     });
 
+    // 一覧から削除ボタンを押下時
+    $('#destroyModal').on('show.bs.modal', function(event) {
+        // 削除対象のproduct_idを取得する
+        let button = $(event.relatedTarget);
+        let productId = button.data('id');
+
+            // 削除実行
+            $('#destroyBtn').on('click', function() {
+            // ajax通信
+            $.ajax({
+                type: 'GET',
+                url: '/destroy/' + productId,
+                dataType: 'json',
+                data: {
+                    product_id: productId,
+                },
+                cache: false,
+            })
+            .done(function(data) {
+                // 異常応答
+                if (!data.status) {
+                    // メッセージの作成
+                    let flag = false;
+                    let flashMessage = createFlashMessage(data.id, flag);
+                    $('.jquery-alert').append(flashMessage);
+                    // メッセージの削除
+                    window.setTimeout(function(){
+                        flashMessage.remove();
+                    }, 4000);
+
+                //正常応答
+                } else{
+                    // テーブルを空にする
+                    $('#tr_' + data.id).remove();
+                    // メッセージの作成
+                    let flag = true;
+                    let flashMessage = createFlashMessage(data.id, flag);
+                    $('.jquery-alert').append(flashMessage);
+                    // メッセージの削除
+                    window.setTimeout(function(){
+                        flashMessage.remove();
+                    }, 4000);
+                }
+            })
+            .fail(function(data, xhr, err) {
+                // メッセージの作成
+                let flag = false;
+                let flashMessage = createFlashMessage(data.id, flag);
+                $('.jquery-alert').append(flashMessage);
+                // メッセージの削除
+                window.setTimeout(function(){
+                    flashMessage.remove();
+                }, 4000);
+            });
+        });
+    });
+
+    // フラッシュメッセージの作成
+    function createFlashMessage (id, flag) {
+        let message = '';
+        let flashMessage = document.createElement('div');
+        // 成功時
+        if (flag) {
+            message = 'ID' + id + 'の削除に成功しました。'
+            flashMessage.setAttribute('class', 'alert alert-success my-2 flash-message');
+
+            // 失敗時
+        } else {
+            message = 'ID' + id + 'の削除に失敗しました。'
+            flashMessage.setAttribute('class', 'alert alert-danger my-2 flash-message');
+        }
+        flashMessage.innerHTML = message;
+        return flashMessage;
+    }
+    window.setTimeout(function(){
+        $('.alert-success').remove();
+        $('.alert-danger').remove();
+    }, 4000);
 })

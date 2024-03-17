@@ -150,15 +150,23 @@ class ProductController extends Controller
         // 存在確認
         $product = $this->product->getProduct($id);
         if (!$product) {
-            return redirect()->route('home')->with('error', '削除対象の商品がありません。');
+            return response()->json([
+                'status' => false,
+            ]);
         }
         // 削除処理
         $result = $this->product->exeDestroy($id);
 
         if (!$result) {
-            return redirect()->route('home')->with('error', '削除に失敗しました。');
+            return response()->json([
+                'status' => false,
+                'id' => $id,
+            ]);
         }
-        return redirect()->route('home')->with('message', '削除が完了しました。');
+        return response()->json([
+            'status' => true,
+            'id' => $id,
+        ]);
     }
 
     /**

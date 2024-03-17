@@ -10,6 +10,7 @@
 			<button class="btn btn-primary" onclick="location.href='{{ route('show.register') }}' ">新規登録</button>
 		</div>
     </div>
+    <div class="jquery-alert"></div>
     @if (session('message'))
         <div class="alert alert-success my-2" role="alert">
             {{ session('message') }}
@@ -106,7 +107,7 @@
 				</thead>
 				<tbody id="tableBody">
                     @foreach($products as $product)
-                        <tr class="table align-middle" align="center">
+                        <tr id="tr_{{ $product->id }}" class="table align-middle" align="center">
                             <td>{{ $product->id }}</td>
                             <td>
                                 <img src="{{ asset('storage/'.$product->img_path) }}" alt="商品画像無し" width="100" height="100">
@@ -117,7 +118,7 @@
                             <td>{{ $product->company_name }}</td>
                             <td>
                                 <button class="btn btn-primary" onclick="location.href='{{ route('show.detail', $product->id) }}' ">詳細</button>
-                                <button class="btn btn-danger" onclick="location.href='{{ route('destroy', $product->id) }}' ">削除</button>
+                                <button class="btn btn-danger destroy-btn" data-bs-toggle="modal" data-bs-target="#destroyModal" data-id ="{{ $product->id }}">削除</button>
                             </td>
                         </tr>
                     @endforeach
@@ -125,6 +126,25 @@
 
 			</table>
 		</div>
+    </div>
+
+    {{-- 削除確認ダイアログ --}}
+    <div class="modal fade" id="destroyModal" tabindex="-1" aria-labelledby="destroyModalLable" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="destroyModalLable">商品削除確認</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                本当に削除してよろしいですか。
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">戻る</button>
+                <button id="destroyBtn" type="button" class="btn btn-danger" data-bs-dismiss="modal">削除</button>
+            </div>
+            </div>
+        </div>
     </div>
 </div>
 @endsection
